@@ -28,6 +28,11 @@ public class Lab3Driver{
 			input = scan.nextInt();
 			scan.nextLine();
 			
+			//Example queries:
+			//Example insert: INSERT INTO company.employee VALUES ('Test', 'Testerson', 111222333, null, 1)
+			//Example deletion: delete from company.employee where fname='franklin'
+			//Example search: select e.fname,e.lname,e.dno from company.employee as e where dno='5'
+			
 			switch(input){
 				case(0):
 					System.out.println("Goodbye.");
@@ -67,6 +72,19 @@ public class Lab3Driver{
 						break;
 					}else {
 						Metadata.delete(userQuery);
+					}
+					break;
+				case(4):
+					//Example query
+					//select e.fname,e.lname,e.dno from company.employee as e where dno='5'
+					System.out.println("Input your query: ");
+					userQuery = scan.nextLine();
+					
+					if(userQuery == ""){
+						System.out.println("ERROR: Query was empty.");
+						break;
+					}else {
+						Metadata.search(userQuery);
 					}
 					break;
 				default:

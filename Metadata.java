@@ -4,6 +4,7 @@
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -100,7 +101,7 @@ public class Metadata {
 		char choice;
 		
 		//Example insert
-		//INSERT INTO company.employee VALUES ('Test', 'Testerson', 111222333, null, 1)
+		//delete from company.employee where fname='franklin'
 		try {
 			stmt = connection.createStatement();
 			stmt.executeUpdate(query);
@@ -126,6 +127,42 @@ public class Metadata {
 				}
 				//e.printStackTrace();
 			}
+		}finally {
+			if(stmt != null) {
+				stmt.close();
+			}
+		}
+	}
+	
+	public static void search(String q) throws SQLException{
+		java.sql.Statement stmt = null;
+		String query = q;
+		System.out.println("======================");
+		
+		try {
+			stmt = connection.createStatement();
+			ResultSet rs = stmt.executeQuery(q);
+	        System.out.println("Results for query: ");
+	        
+	        ResultSetMetaData rsmd = rs.getMetaData();
+	        int columnsNumber = rsmd.getColumnCount();
+	        
+	        System.out.print("| ");
+	        for(int i = 1; i <= columnsNumber; i++){
+	        	System.out.print(rsmd.getColumnName(i) + " | ");
+	        }
+	        System.out.println("");
+	        
+	        while (rs.next()) {
+	            for (int i = 1; i <= columnsNumber; i++) {
+	                if (i > 1) System.out.print(",  ");
+	                String columnValue = rs.getString(i);
+	                System.out.print(columnValue + " ");
+	            }
+	            System.out.println("");
+	        }
+		}catch(SQLException e) {
+			e.printStackTrace();
 		}finally {
 			if(stmt != null) {
 				stmt.close();
