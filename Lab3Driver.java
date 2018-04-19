@@ -1,3 +1,6 @@
+//Matthew Johnston & Michael Keeton
+//CSCI 3410 Databases Lab3
+
 import java.sql.SQLException;
 import java.util.Scanner;
 
@@ -19,6 +22,9 @@ public class Lab3Driver{
 			System.out.println("Type '0' to exit.");
 			System.out.println("Type '1' for metadata.");
 			System.out.println("Type '2' to insert data.");
+			System.out.println("Type '3' to delete data.");
+			System.out.println("Type '4' to run an SQL query.");
+			System.out.println("======================");
 			input = scan.nextInt();
 			scan.nextLine();
 			
@@ -46,11 +52,21 @@ public class Lab3Driver{
 						System.out.println("ERROR: Query was empty.");
 						break;
 					}else {
-						try{
-							Metadata.insert(userQuery);
-						}catch (SQLException e){
-							System.err.println("There was an error retrieving the metadata properties: " + e.getMessage());
-						}
+						Metadata.insert(userQuery);
+					}
+					break;
+				case(3):
+					//Franklin Wong 333445555 888665555 5
+					//Example delete
+					//DELETE FROM company.employee WHERE ssn='111222333'
+					System.out.println("Input your deletion query: ");
+					userQuery = scan.nextLine();
+					
+					if(userQuery == ""){
+						System.out.println("ERROR: Query was empty.");
+						break;
+					}else {
+						Metadata.delete(userQuery);
 					}
 					break;
 				default:

@@ -1,10 +1,15 @@
+//Matthew Johnston & Michael Keeton
+//CSCI 3410 Databases Lab3
+
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import com.mysql.jdbc.Statement;
+import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 
 public class Metadata {
 	static Connection connection = null;
@@ -82,6 +87,45 @@ public class Metadata {
 			System.out.println("Insertion successful.");
 		}catch(SQLException e) {
 			e.printStackTrace();
+		}finally {
+			if(stmt != null) {
+				stmt.close();
+			}
+		}
+	}
+	
+	public static void delete(String q) throws SQLException{
+		java.sql.Statement stmt = null;
+		String query = q;
+		char choice;
+		
+		//Example insert
+		//INSERT INTO company.employee VALUES ('Test', 'Testerson', 111222333, null, 1)
+		try {
+			stmt = connection.createStatement();
+			stmt.executeUpdate(query);
+			
+			System.out.println("======================");
+			System.out.println("Deletion successful.");
+		}catch(SQLException e) {
+			if(e instanceof MySQLIntegrityConstraintViolationException){
+				Scanner scan = new Scanner(System.in);
+				String input = "";
+				System.out.println("The employee you wish to delete is an active manager. Proceed anyway? (y/n)");
+				input = scan.next();
+				choice = input.charAt(0);
+				
+				if(choice == 'y'){
+					stmt.execute("SET FOREIGN_KEY_CHECKS=0");
+					stmt.executeUpdate(query);
+					
+					System.out.println("======================");
+					System.out.println("Deletion successful.");
+				}else{
+					System.out.println("Employee not deleted.");
+				}
+				//e.printStackTrace();
+			}
 		}finally {
 			if(stmt != null) {
 				stmt.close();
