@@ -1,4 +1,5 @@
 # CSCI3410-Databases
+# Lab3 Assignment
 The system provides the following functions:
 1. Provide a menu so that the user can check the metadata of the database.
 2. Provide insertion and deletion for each relation. Print a message showing detailed
